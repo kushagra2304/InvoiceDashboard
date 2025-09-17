@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Plus, Calendar, Bell, Edit } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Line, LineChart, ReferenceLine } from 'recharts';
+import {
+  ComposedChart,
+  Line,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface Invoice {
   id: number;
@@ -30,14 +39,14 @@ const InvoiceDashboard: React.FC = () => {
     { id: 13, clientName: 'Income Trend', amount: 125000, dueDate: '2024-06-15', status: 'paid' },
   ];
 
-  const incomeData = [
-    { month: 'Jan', income: 3.5, growth: 25 },
-    { month: 'Feb', income: 5.0, growth: 43 },
-    { month: 'Mar', income: 6.8, growth: 36 },
-    { month: 'Apr', income: 3.2, growth: -53 },
-    { month: 'May', income: 5.5, growth: 72 },
-    { month: 'Jun', income: 0, growth: -100 },
-  ];
+ const data = [
+  { month: "Jan", income: 4000, momGrowth: 25 },
+  { month: "Feb", income: 5000, momGrowth: 10 },
+  { month: "Mar", income: 7000, momGrowth: 20 },
+  { month: "Apr", income: 3000, momGrowth: -40 },
+  { month: "May", income: 6000, momGrowth: 80 },
+  { month: "Jun", income: 0, momGrowth: -100 },
+];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -83,6 +92,39 @@ const InvoiceDashboard: React.FC = () => {
       <div className="w-10 h-10 rounded-full bg-gray-300"></div>
     </div>
   );
+
+  function Crown() {
+  return (
+    <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.56684 18V16.4118H17.4332V18H3.56684ZM3.53658 14.62L2.10316 6.32647C2.06807 6.33318 2.0286 6.33926 1.98474 6.34474C1.94088 6.35021 1.9014 6.35294 1.86632 6.35294C1.48175 6.35294 1.15789 6.21935 0.894737 5.95218C0.631579 5.68482 0.5 5.36029 0.5 4.97859C0.5 4.59106 0.631579 4.26168 0.894737 3.99044C1.15789 3.71938 1.48202 3.58385 1.86711 3.58385C2.25202 3.58385 2.57921 3.71938 2.84868 3.99044C3.11833 4.26168 3.25316 4.59106 3.25316 4.97859C3.25316 5.07706 3.245 5.16856 3.22868 5.25309C3.21254 5.33744 3.18693 5.41694 3.15184 5.49159L6.48184 6.9128L9.69026 2.50862C9.51763 2.38774 9.37833 2.22874 9.27237 2.03162C9.1664 1.8345 9.11342 1.62221 9.11342 1.39474C9.11342 1.00738 9.24816 0.678088 9.51763 0.406853C9.78711 0.135618 10.1144 0 10.4995 0C10.8844 0 11.2118 0.135441 11.4818 0.406323C11.7517 0.677029 11.8866 1.00588 11.8866 1.39288C11.8866 1.62494 11.8336 1.83873 11.7276 2.03426C11.6217 2.22962 11.4824 2.38774 11.3097 2.50862L14.5182 6.9128L17.8482 5.49159C17.8211 5.41941 17.7975 5.33991 17.7774 5.25309C17.757 5.16644 17.7468 5.07494 17.7468 4.97859C17.7468 4.59106 17.8784 4.26168 18.1416 3.99044C18.4047 3.71938 18.7289 3.58385 19.1139 3.58385C19.4989 3.58385 19.8261 3.71938 20.0958 3.99044C20.3653 4.26168 20.5 4.59106 20.5 4.97859C20.5 5.35924 20.365 5.6835 20.095 5.95138C19.825 6.21909 19.4971 6.35294 19.1113 6.35294C19.0804 6.35294 19.0457 6.34853 19.0071 6.33971C18.9687 6.33088 18.9308 6.32647 18.8934 6.32647L17.4634 14.62H3.53658ZM4.88053 13.0317H16.1195L17.1074 7.57244L13.9797 8.88194L10.5 4.07859L7.02026 8.88194L3.89263 7.57244L4.88053 13.0317Z" fill="url(#paint0_linear_1_301)"/>
+<defs>
+<linearGradient id="paint0_linear_1_301" x1="7.13482" y1="-0.767422" x2="10.468" y2="19.6074" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DD2A7B"/>
+<stop offset="0.41261" stop-color="#9747FF"/>
+<stop offset="1" stop-color="#334CCA"/>
+</linearGradient>
+</defs>
+</svg>
+
+  );
+}
+
+// Gradient wrapper (also inline)
+function GradientIconWrapper({ children, size = 32 }: { children: React.ReactNode; size?: number }) {
+  return (
+    <div
+      className="flex items-center justify-center rounded"
+      style={{
+        width: size,
+        height: size,
+        // background:
+        //   "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
+      }}
+    >
+      <div className="text-white w-4 h-4">{children}</div>
+    </div>
+  );
+}
 
   const DashboardView = () => (
     <div className="min-h-screen bg-white">
@@ -139,13 +181,9 @@ const InvoiceDashboard: React.FC = () => {
                 {period.replace('Month', ' Month').replace('Year', ' Year')}
               </button>
             ))}
-            <svg width="24" height="24" viewBox="0 0 24 24" className="p-1 rounded" style={{
-              background: 'linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)'
-            }}>
-              <path d="M5 16L3 14L5 12L6.4 13.4L10 9.8L13.6 13.4L20.2 6.8L21.6 8.2L13.6 16.2L10 12.6L6.4 16.2L5 16Z" fill="white"/>
-              <circle cx="12" cy="7" r="2" fill="white"/>
-              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2Z" fill="white"/>
-            </svg>
+            <GradientIconWrapper>
+        <Crown />
+      </GradientIconWrapper>
           </div>
           <button className="flex items-center text-gray-500 text-sm">
             <Calendar className="w-4 h-4 mr-2" />
@@ -177,49 +215,32 @@ const InvoiceDashboard: React.FC = () => {
           <p className="text-gray-500 text-sm mb-4">Your monthly income and growth for the last 6 months.</p>
           
           <div className="h-64 w-full relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={incomeData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                <YAxis 
-                  yAxisId="income"
-                  orientation="left"
-                  axisLine={false} 
-                  tickLine={false}
-                  tickFormatter={(value) => `$${value}k`}
-                  domain={[0, 8]}
-                />
-                <YAxis 
-                  yAxisId="growth"
-                  orientation="right"
-                  axisLine={false} 
-                  tickLine={false}
-                  tickFormatter={(value) => `${value}%`}
-                  domain={[-100, 100]}
-                />
-                <Bar yAxisId="income" dataKey="income" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                <ReferenceLine yAxisId="growth" y={0} stroke="#666" strokeDasharray="2 2" />
-                <LineChart data={incomeData}>
-                  <Line 
-                    yAxisId="growth"
-                    type="monotone" 
-                    dataKey="growth" 
-                    stroke="#7C3AED" 
-                    strokeWidth={2}
-                    dot={{ fill: '#7C3AED', strokeWidth: 2, r: 4 }}
-                  />
-                </LineChart>
-              </BarChart>
-            </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={300}>
+      <ComposedChart data={data}>
+        <XAxis dataKey="month" />
+        <YAxis yAxisId="left" orientation="left" />
+        <YAxis yAxisId="right" orientation="right" />
+        <Tooltip />
+        <Legend />
+        <Bar yAxisId="left" dataKey="income" fill="#A020F0" />
+        <Line
+          yAxisId="right"
+          type="monotone"
+          dataKey="momGrowth"
+          stroke="#5A0C0C"
+        />
+      </ComposedChart>
+    </ResponsiveContainer>
           </div>
 
           <div className="flex justify-center mt-4 space-x-6">
             <div className="flex items-center">
-              <div className="w-3 h-3 bg-purple-500 rounded mr-2"></div>
-              <span className="text-sm text-gray-600">Income</span>
+              <div className="w-3 h-3 rounded mr-2"></div>
+              {/* <span className="text-sm text-gray-600">Income</span> */}
             </div>
             <div className="flex items-center">
-              <div className="w-3 h-1 bg-purple-600 rounded mr-2"></div>
-              <span className="text-sm text-gray-600">momGrowth</span>
+              <div className="w-3 h-1  rounded mr-2"></div>
+              {/* <span className="text-sm text-gray-600">momGrowth</span> */}
             </div>
           </div>
         </div>
