@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Plus, Calendar, Bell, Edit } from 'lucide-react';
+import { ChevronLeft, Calendar, Bell, Edit } from 'lucide-react';
 import {
   ComposedChart,
   Line,
@@ -16,12 +16,26 @@ interface Invoice {
   clientName: string;
   amount: number;
   dueDate: string;
-  status: 'paid' | 'unpaid' | 'disputed' | 'overdue' | 'partially-paid' | 'draft' | 'awaited';
+  status: 'Update Status'|'paid' | 'unpaid' | 'disputed' | 'overdue' | 'partially-paid' | 'draft' | 'awaited';
 }
+// const statusOptions: Invoice["status"][] = [
+//   "paid",
+//   "unpaid",
+//   "disputed",
+//   "overdue",
+//   "partially-paid",
+//   "draft",
+//   "awaited",
+// ];
 
 const InvoiceDashboard: React.FC = () => {
   const [currentView, setCurrentView] = useState<'dashboard' | 'invoices'>('dashboard');
-  const [selectedPeriod, setSelectedPeriod] = useState<'1Month' | '3Months' | '1Year'>('3Months');
+type Period = '1Month' | '3Months' | '1Year' | 'Custom';
+
+const [selectedPeriod, setSelectedPeriod] = useState<Period>('1Month');
+const [status, setStatus] = useState<Invoice["status"]>();
+
+
 
   const invoices: Invoice[] = [
     { id: 1, clientName: 'Client Name', amount: 125000, dueDate: '2024-06-15', status: 'unpaid' },
@@ -60,6 +74,12 @@ const InvoiceDashboard: React.FC = () => {
       default: return 'bg-gray-300 text-gray-700';
     }
   };
+//   const handleStatusChange = (id: number, newStatus: Invoice['status']) => {
+//   // update the invoice in state
+//   setInvoices((prev) =>
+//     prev.map((inv) => (inv.id === id ? { ...inv, status: newStatus } : inv))
+//   );
+// };
 
   const getStatusText = (status: string) => {
     switch (status) {
@@ -86,10 +106,24 @@ const InvoiceDashboard: React.FC = () => {
         </button>
         <span className="text-sm text-gray-600">Back</span>
       </div>
-      <span className="text-lg font-semibold text-gray-800 absolute left-1/2 transform -translate-x-1/2">
-        {currentView === 'dashboard' ? 'Dashboard' : 'Your Invoices'}
-      </span>
-      <div className="w-10 h-10 rounded-full bg-gray-300"></div>
+      <span 
+  className="absolute left-1/2 transform -translate-x-1/2 text-gray-800 font-semibold" 
+  style={{
+    width: "88px",
+    height: "22px",
+    transform: "translateX(-50%) rotate(0deg)",
+    opacity: 1,
+  }}
+>
+   {currentView === 'dashboard' ? 'Dashboard' : 'Your Invoices'}
+</span>
+
+      <div className="w-10 h-10 rounded-full bg-gray-300"><img
+  src="/Avatar.jpeg" // replace with your image URL
+  alt="Avatar"
+  className="w-10 h-10 rounded-full object-cover"
+/>
+</div>
     </div>
   );
 
@@ -131,81 +165,197 @@ function GradientIconWrapper({ children, size = 32 }: { children: React.ReactNod
       <Header />
       <div className="pt-20 px-4 pb-6">
         {/* Create New Invoice Card */}
-        <div className="bg-gray-100 rounded-2xl p-6 mb-6 border border-gray-200">
-          <div className="flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 p-1" style={{
-              background: 'linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)'
-            }}>
-              <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
-                <Plus className="w-8 h-8" style={{
-                  color: '#DD2A7B'
-                }} />
-              </div>
-            </div>
-            <h2 className="text-xl font-semibold mb-2" style={{
-              background: 'linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>Create New Invoice</h2>
-            <p className="text-gray-500 text-sm mb-4">Start by creating and sending new invoice</p>
-            <p className="text-sm" style={{
-              background: 'linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>Or Upload an existing invoice and set payment reminder</p>
+        <div className="bg-gray-100  p-6 mb-6 border border-gray-200 rounded-2xl">
+         <div className="flex flex-col items-center text-center">
+  <div
+    className="rounded-full flex items-center justify-center mb-4"
+    style={{
+      width: "50.67px",
+      height: "50.67px",
+      opacity: 1,
+    }}
+  >
+    {/* ✅ Use only your gradient SVG */}
+    <svg
+      width="51"
+      height="52"
+      viewBox="0 0 51 52"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M23.5003 38.667H27.5003V28.0003H38.167V24.0003H27.5003V13.3337H23.5003V24.0003H12.8337V28.0003H23.5003V38.667ZM25.505 51.3337C22.001 51.3337 18.7074 50.6688 15.6243 49.339C12.5412 48.0092 9.85944 46.2045 7.57899 43.925C5.29855 41.6454 3.49299 38.9648 2.16233 35.883C0.832103 32.8012 0.166992 29.5086 0.166992 26.005C0.166992 22.501 0.831881 19.2074 2.16166 16.1243C3.49144 13.0412 5.2961 10.3594 7.57566 8.07899C9.85522 5.79855 12.5359 3.99299 15.6177 2.66233C18.6994 1.3321 21.9921 0.666992 25.4957 0.666992C28.9997 0.666992 32.2932 1.33188 35.3763 2.66166C38.4594 3.99144 41.1412 5.7961 43.4217 8.07566C45.7021 10.3552 47.5077 13.0359 48.8383 16.1177C50.1686 19.1994 50.8337 22.4921 50.8337 25.9957C50.8337 29.4997 50.1688 32.7932 48.839 35.8763C47.5092 38.9594 45.7045 41.6412 43.425 43.9217C41.1454 46.2021 38.4648 48.0077 35.383 49.3383C32.3012 50.6686 29.0086 51.3337 25.505 51.3337ZM25.5003 47.3337C31.4559 47.3337 36.5003 45.267 40.6337 41.1337C44.767 37.0003 46.8337 31.9559 46.8337 26.0003C46.8337 20.0448 44.767 15.0003 40.6337 10.867C36.5003 6.73366 31.4559 4.66699 25.5003 4.66699C19.5448 4.66699 14.5003 6.73366 10.367 10.867C6.23366 15.0003 4.16699 20.0448 4.16699 26.0003C4.16699 31.9559 6.23366 37.0003 10.367 41.1337C14.5003 45.267 19.5448 47.3337 25.5003 47.3337Z"
+        fill="url(#paint0_linear_1_250)"
+      />
+      <defs>
+        <linearGradient
+          id="paint0_linear_1_250"
+          x1="16.9752"
+          y1="-1.49316"
+          x2="27.3365"
+          y2="55.5097"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#DD2A7B" />
+          <stop offset="0.41261" stopColor="#9747FF" />
+          <stop offset="1" stopColor="#334CCA" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <h2
+    className="mb-2 text-center"
+    style={{
+      fontFamily: "Roboto, sans-serif",
+      fontWeight: 600,
+      fontSize: "24px",
+      lineHeight: "100%",
+      letterSpacing: "0",
+      background:
+        "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+    }}
+  >
+    Create New Invoice
+  </h2>
+
+            <p
+  className="text-gray-500 mb-4"
+  style={{
+    fontFamily: "Roboto, sans-serif",
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "28px",   // matches height: 28
+    width: "288px",
+    height: "28px",
+    opacity: 1,
+    textAlign: "center",
+  }}
+>
+  Start by creating and sending new invoice
+</p>
+
+
+            
           </div>
-        </div>
+          </div>
+          
+<div
+  className="flex justify-center items-center"
+  style={{
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    gap: "10px",
+  }}
+>
+  <p
+    className="text-sm"
+    style={{
+      background:
+        "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      width: "297px",
+      height: "20px",
+      opacity: 1,
+      textAlign: "center",
+    }}
+  >
+    Or Upload an existing invoice and set payment reminder
+  </p>
+</div>
+
+
 
         {/* Time Period Selection */}
+        {/* Time Period Buttons */}
         <div className="bg-white rounded-2xl p-4 mb-6 border border-gray-200">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-gray-600 font-medium">Time Period</span>
-            <span className="text-gray-400 text-sm">dd.mm.yyyy - dd.mm.yyyy</span>
+<div className="flex flex-wrap space-x-2 mb-3">
+  {(['1Month', '3Months', '1Year'] as Period[]).map((period) => (
+    <button
+      key={period}
+      onClick={() => setSelectedPeriod(period)}
+      className={`flex items-center justify-center space-x-2 text-sm ${
+        selectedPeriod === period ? "font-medium" : "text-gray-500"
+      }`}
+      style={{
+        width: "80px",
+        height: "28px",
+        borderRadius: "16px",
+        padding: "4px 12px",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: selectedPeriod === period ? "#C084FC" : "#E5E7EB",
+        backgroundColor: selectedPeriod === period ? "#F5F3FF" : "#F9FAFB",
+        ...(selectedPeriod === period
+          ? {
+              background:
+                "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }
+          : {}),
+      }}
+    >
+      <span>{period}</span>
+      {period === "1Year" && (
+        <GradientIconWrapper>
+          <Crown />
+        </GradientIconWrapper>
+      )}
+    </button>
+  ))}
+</div>
+
+{/* Custom button on a new line */}
+<div className="mt-2">
+            <button
+              onClick={() => setSelectedPeriod("Custom")}
+              className={`flex items-center space-x-1 text-sm ${
+                selectedPeriod === "Custom" ? "font-medium" : "text-gray-500"
+              }`}
+              style={{
+                width: "auto",
+                height: "28px",
+                borderRadius: "16px",
+                padding: "4px 12px",
+                borderWidth: "1px",
+                borderStyle: "solid",
+                borderColor: selectedPeriod === "Custom" ? "#C084FC" : "#E5E7EB",
+                backgroundColor: selectedPeriod === "Custom" ? "#F5F3FF" : "#F9FAFB",
+                ...(selectedPeriod === "Custom"
+                  ? {
+                      background:
+                        "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }
+                  : {}),
+              }}
+            >
+              <Calendar className="w-4 h-4" />
+              <span>Custom</span>
+            </button>
           </div>
-          <div className="flex space-x-2 mb-3">
-            {['1Month', '3Months', '1Year'].map((period) => (
-              <button
-                key={period}
-                onClick={() => setSelectedPeriod(period as any)}
-                className={`px-4 py-2 rounded-lg text-sm border ${
-                  selectedPeriod === period
-                    ? 'border-purple-300 bg-purple-50 font-medium' 
-                    : 'border-gray-200 bg-gray-50 text-gray-500'
-                }`}
-                style={selectedPeriod === period ? {
-                  background: 'linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                } : {}}
-              >
-                {period.replace('Month', ' Month').replace('Year', ' Year')}
-              </button>
-            ))}
-            <GradientIconWrapper>
-        <Crown />
-      </GradientIconWrapper>
-          </div>
-          <button className="flex items-center text-gray-500 text-sm">
-            <Calendar className="w-4 h-4 mr-2" />
-            Custom
-          </button>
         </div>
 
         {/* Total Earnings */}
         <div className="bg-white rounded-2xl p-4 mb-6 border border-gray-200">
           <h3 className="text-gray-600 font-medium mb-2">Total Earnings</h3>
-          <div className="text-3xl font-bold text-purple-600">₹1,25,000</div>
+          <div className="text-3xl font-bold text-purple-600">$1,25,000</div>
         </div>
 
         {/* Payment Status Cards */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-white rounded-2xl p-4 border border-gray-200">
             <h4 className="text-gray-600 font-medium mb-2">Payment Awaited</h4>
-            <div className="text-2xl font-bold text-purple-600">₹25,000</div>
+            <div className="text-2xl font-bold text-purple-600">$25,000</div>
           </div>
           <div className="bg-white rounded-2xl p-4 border border-gray-200">
             <h4 className="text-gray-600 font-medium mb-2">Payment Overdue</h4>
-            <div className="text-2xl font-bold text-purple-600">₹25,000</div>
+            <div className="text-2xl font-bold text-purple-600">$25,000</div>
           </div>
         </div>
 
@@ -255,42 +405,102 @@ function GradientIconWrapper({ children, size = 32 }: { children: React.ReactNod
           </div>
           
           <div className="space-y-3">
-            {invoices.map((invoice) => (
-              <div key={invoice.id} className="flex justify-between items-center py-2">
-                <div>
-                  <div className="font-medium text-gray-800">{invoice.clientName}</div>
-                  <div className="text-sm text-gray-500">
-                    {formatCurrency(invoice.amount)}, Due: {invoice.dueDate}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {invoice.id === 1 ? (
-                    <button className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium">
-                      Update Status
-                    </button>
-                  ) : (
-                    <>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
-                        {getStatusText(invoice.status)}
-                      </span>
-                      {(invoice.status === 'overdue' || invoice.status === 'awaited') && (
-                        <Bell className="w-4 h-4 text-gray-400" />
-                      )}
-                      {invoice.status === 'draft' && (
-                        <Edit className="w-4 h-4 text-gray-400" />
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+  {invoices.map((invoice) => (
+    <div key={invoice.id} className="flex justify-between items-center py-2">
+      <div>
+        <div className="font-medium text-gray-800">{invoice.clientName}</div>
+        <div className="text-sm text-gray-500">
+          {formatCurrency(invoice.amount)}, Due: {invoice.dueDate}
         </div>
+      </div>
+
+      <div className="flex items-center space-x-2">
+        {invoice.id === 1 ? (
+  <select
+    value={status}
+    onChange={(e) => setStatus(e.target.value as Invoice["status"])}
+    className="bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer"
+  >
+    {['Update Status','paid','unpaid','disputed','overdue','partially-paid','draft','awaited'].map((s) => (
+      <option key={s} value={s}>
+        {s === "partially-paid" ? "Partially Paid" : s.charAt(0).toUpperCase() + s.slice(1)}
+      </option>
+    ))}
+          </select>
+        ) : (
+          <>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}
+            >
+              {getStatusText(invoice.status)}
+            </span>
+            {(invoice.status === 'overdue' || invoice.status === 'awaited') && (
+              <Bell className="w-4 h-4 text-gray-400" />
+            )}
+            {invoice.status === 'draft' && (
+              <Edit className="w-4 h-4 text-gray-400" />
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  ))}
+</div>
+
+        </div>
+        
+<div className="text-center mt-8 pb-6">
+  <div className="flex items-center justify-center mb-2 text-gray-600 font-semibold">
+    <span>Spark</span>
+
+    {/* Paw SVG replacing lightning ⚡ */}
+    <span className="inline-block relative mx-1">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+        style={{
+          width: '20px',
+          height: '20px',
+          opacity: 1,
+          display: 'inline-block',
+          verticalAlign: 'middle',
+        }}
+      >
+        <defs>
+          <linearGradient
+            id="pawGradient"
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1="0"
+            x2="512"
+            y2="512"
+          >
+            <stop offset="1.49%" stopColor="#DD2A7B" />
+            <stop offset="42.07%" stopColor="#9747FF" />
+            <stop offset="99.84%" stopColor="#334CCA" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#pawGradient)"
+          d="M490.39 182.75c-5.55-13.19-14.77-22.7-26.67-27.49l-.16-.06a46.5 46.5 0 0 0-17-3.2h-.64c-27.24.41-55.05 23.56-69.19 57.61c-10.37 24.9-11.56 51.68-3.18 71.64c5.54 13.2 14.78 22.71 26.73 27.5l.13.05a46.5 46.5 0 0 0 17 3.2c27.5 0 55.6-23.15 70-57.65c10.24-24.87 11.37-51.63 2.98-71.6M381.55 329.61c-15.71-9.44-30.56-18.37-40.26-34.41C314.53 250.8 298.37 224 256 224s-58.57 26.8-85.39 71.2c-9.72 16.06-24.6 25-40.36 34.48c-18.07 10.86-36.74 22.08-44.8 44.16a66.9 66.9 0 0 0-4.65 25c0 35.95 28 65.2 62.4 65.2c17.75 0 36.64-6.15 56.63-12.66c19.22-6.26 39.09-12.73 56.27-12.73s37 6.47 56.15 12.73C332.2 457.85 351 464 368.8 464c34.35 0 62.3-29.25 62.3-65.2a67 67 0 0 0-4.75-25c-8.06-22.1-26.74-33.33-44.8-44.19M150 188.85c11.9 14.93 27 23.15 42.52 23.15a43 43 0 0 0 6.33-.47c32.37-4.76 52.54-44.26 45.92-90C242 102.3 234.6 84.39 224 71.11C212.12 56.21 197 48 181.49 48a43 43 0 0 0-6.33.47c-32.37 4.76-52.54 44.26-45.92 90c2.76 19.2 10.16 37.09 20.76 50.38m163.16 22.68a43 43 0 0 0 6.33.47c15.53 0 30.62-8.22 42.52-23.15c10.59-13.29 17.95-31.18 20.75-50.4c6.62-45.72-13.55-85.22-45.92-90a43 43 0 0 0-6.33-.47C315 48 299.88 56.21 288 71.11c-10.6 13.28-18 31.19-20.76 50.44c-6.62 45.72 13.55 85.22 45.92 89.98M111.59 308.8l.14-.05c11.93-4.79 21.16-14.29 26.69-27.48c8.38-20 7.2-46.75-3.15-71.65C120.94 175.16 92.85 152 65.38 152a46.4 46.4 0 0 0-17 3.2l-.14.05c-11.9 4.75-21.13 14.29-26.66 27.48c-8.38 20-7.2 46.75 3.15 71.65C39.06 288.84 67.15 312 94.62 312a46.4 46.4 0 0 0 16.97-3.2"
+        />
+      </svg>
+    </span>
+
+    <span className='font-normal'>nomy</span>
+  </div>
+
+  <div className="text-gray-500 text-sm">
+    sparking the creator economy
+  </div>
+</div>
+
+
       </div>
     </div>
   );
 
-  const InvoicesView = () => (
+    const InvoicesView = () => (
     <div className="min-h-screen bg-white">
       <Header />
       <div className="pt-20 px-4 pb-6">
@@ -334,6 +544,8 @@ function GradientIconWrapper({ children, size = 32 }: { children: React.ReactNod
       </div>
     </div>
   );
+
+  
 
   return currentView === 'dashboard' ? <DashboardView /> : <InvoicesView />;
 };
