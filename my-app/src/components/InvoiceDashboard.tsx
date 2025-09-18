@@ -359,13 +359,15 @@ const handleStatusChange = (id: number, newStatus: Invoice["status"]) => {
       <div className="flex items-center space-x-2">
         {invoice.id === 1 ? (
           <select
-            value={statuses[invoice.id] ?? invoice.status}
+            value={statuses[invoice.id] ?? "Update Status"}
             onChange={(e) =>
               handleStatusChange(invoice.id, e.target.value as Invoice["status"])
             }
             className={`rounded-full text-sm font-medium cursor-pointer px-3 py-1 w-auto ${
               getStatusColor(statuses[invoice.id] ?? invoice.status)
             }`}
+        
+  style={{ width: "auto", minWidth: 0 }}
           >
             {[
               "Update Status",
