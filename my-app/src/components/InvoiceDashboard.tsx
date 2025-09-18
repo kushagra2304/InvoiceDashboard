@@ -170,37 +170,13 @@ const handleStatusChange = (id: number, newStatus: Invoice["status"]) => {
             <Header />
             <div className="pt-20 px-4 pb-6">
                 {/* Create New Invoice Card */}
-                <div className="bg-gray-100  p-6 mb-6 border border-gray-200 rounded-2xl">
+                <div className="bg-gray-100 p-6 mb-4 border border-gray-200 rounded-2xl shadow-sm">
                     <div className="flex flex-col items-center text-center">
-                        <div
-                            className="rounded-full flex items-center justify-center mb-4"
-                            style={{
-                                width: "50.67px",
-                                height: "50.67px",
-                                opacity: 1,
-                            }}
-                        >
-                            {/* ✅ Use only your gradient SVG */}
-                            <svg
-                                width="51"
-                                height="52"
-                                viewBox="0 0 51 52"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d="M23.5003 38.667H27.5003V28.0003H38.167V24.0003H27.5003V13.3337H23.5003V24.0003H12.8337V28.0003H23.5003V38.667ZM25.505 51.3337C22.001 51.3337 18.7074 50.6688 15.6243 49.339C12.5412 48.0092 9.85944 46.2045 7.57899 43.925C5.29855 41.6454 3.49299 38.9648 2.16233 35.883C0.832103 32.8012 0.166992 29.5086 0.166992 26.005C0.166992 22.501 0.831881 19.2074 2.16166 16.1243C3.49144 13.0412 5.2961 10.3594 7.57566 8.07899C9.85522 5.79855 12.5359 3.99299 15.6177 2.66233C18.6994 1.3321 21.9921 0.666992 25.4957 0.666992C28.9997 0.666992 32.2932 1.33188 35.3763 2.66166C38.4594 3.99144 41.1412 5.7961 43.4217 8.07566C45.7021 10.3552 47.5077 13.0359 48.8383 16.1177C50.1686 19.1994 50.8337 22.4921 50.8337 25.9957C50.8337 29.4997 50.1688 32.7932 48.839 35.8763C47.5092 38.9594 45.7045 41.6412 43.425 43.9217C41.1454 46.2021 38.4648 48.0077 35.383 49.3383C32.3012 50.6686 29.0086 51.3337 25.505 51.3337ZM25.5003 47.3337C31.4559 47.3337 36.5003 45.267 40.6337 41.1337C44.767 37.0003 46.8337 31.9559 46.8337 26.0003C46.8337 20.0448 44.767 15.0003 40.6337 10.867C36.5003 6.73366 31.4559 4.66699 25.5003 4.66699C19.5448 4.66699 14.5003 6.73366 10.367 10.867C6.23366 15.0003 4.16699 20.0448 4.16699 26.0003C4.16699 31.9559 6.23366 37.0003 10.367 41.1337C14.5003 45.267 19.5448 47.3337 25.5003 47.3337Z"
-                                    fill="url(#paint0_linear_1_250)"
-                                />
+                        <div className="rounded-full flex items-center justify-center mb-4" style={{ width: "50.67px", height: "50.67px" }}>
+                            <svg width="51" height="52" viewBox="0 0 51 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.5003 38.667H27.5003V28.0003H38.167V24.0003H27.5003V13.3337H23.5003V24.0003H12.8337V28.0003H23.5003V38.667ZM25.505 51.3337C22.001 51.3337 18.7074 50.6688 15.6243 49.339C12.5412 48.0092 9.85944 46.2045 7.57899 43.925C5.29855 41.6454 3.49299 38.9648 2.16233 35.883C0.832103 32.8012 0.166992 29.5086 0.166992 26.005C0.166992 22.501 0.831881 19.2074 2.16166 16.1243C3.49144 13.0412 5.2961 10.3594 7.57566 8.07899C9.85522 5.79855 12.5359 3.99299 15.6177 2.66233C18.6994 1.3321 21.9921 0.666992 25.4957 0.666992C28.9997 0.666992 32.2932 1.33188 35.3763 2.66166C38.4594 3.99144 41.1412 5.7961 43.4217 8.07566C45.7021 10.3552 47.5077 13.0359 48.8383 16.1177C50.1686 19.1994 50.8337 22.4921 50.8337 25.9957C50.8337 29.4997 50.1688 32.7932 48.839 35.8763C47.5092 38.9594 45.7045 41.6412 43.425 43.9217C41.1454 46.2021 38.4648 48.0077 35.383 49.3383C32.3012 50.6686 29.0086 51.3337 25.505 51.3337ZM25.5003 47.3337C31.4559 47.3337 36.5003 45.267 40.6337 41.1337C44.767 37.0003 46.8337 31.9559 46.8337 26.0003C46.8337 20.0448 44.767 15.0003 40.6337 10.867C36.5003 6.73366 31.4559 4.66699 25.5003 4.66699C19.5448 4.66699 14.5003 6.73366 10.367 10.867C6.23366 15.0003 4.16699 20.0448 4.16699 26.0003C4.16699 31.9559 6.23366 37.0003 10.367 41.1337C14.5003 45.267 19.5448 47.3337 25.5003 47.3337Z" fill="url(#paint0_linear_1_250)" />
                                 <defs>
-                                    <linearGradient
-                                        id="paint0_linear_1_250"
-                                        x1="16.9752"
-                                        y1="-1.49316"
-                                        x2="27.3365"
-                                        y2="55.5097"
-                                        gradientUnits="userSpaceOnUse"
-                                    >
+                                    <linearGradient id="paint0_linear_1_250" x1="16.9752" y1="-1.49316" x2="27.3365" y2="55.5097" gradientUnits="userSpaceOnUse">
                                         <stop stopColor="#DD2A7B" />
                                         <stop offset="0.41261" stopColor="#9747FF" />
                                         <stop offset="1" stopColor="#334CCA" />
@@ -209,68 +185,23 @@ const handleStatusChange = (id: number, newStatus: Invoice["status"]) => {
                             </svg>
                         </div>
 
-                        <h2
-                            className="mb-2 text-center"
-                            style={{
-                                fontFamily: "Roboto, sans-serif",
-                                fontWeight: 600,
-                                fontSize: "24px",
-                                lineHeight: "100%",
-                                letterSpacing: "0",
-                                background:
-                                    "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent",
-                            }}
-                        >
+                        <h2 className="mb-2 text-center text-2xl font-semibold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 bg-clip-text text-transparent">
                             Create New Invoice
                         </h2>
 
-                        <p
-                            className="text-gray-500 mb-4"
-                            style={{
-                                fontFamily: "Roboto, sans-serif",
-                                fontWeight: 400,
-                                fontSize: "14px",
-                                lineHeight: "28px",   // matches height: 28
-                                width: "288px",
-                                height: "28px",
-                                opacity: 1,
-                                textAlign: "center",
-                            }}
-                        >
+                        <p className="text-gray-500 mb-4 text-sm leading-7">
                             Start by creating and sending new invoice
                         </p>
-
-
-
                     </div>
                 </div>
 
-                <div
-                    className="flex justify-center items-center"
-                    style={{
-                        paddingTop: "12px",
-                        paddingBottom: "12px",
-                        gap: "10px",
-                    }}
-                >
-                    <p
-                        className="text-sm"
-                        style={{
-                            background:
-                                "linear-gradient(169.7deg, #DD2A7B 1.49%, #9747FF 42.07%, #334CCA 99.84%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            width: "297px",
-                            height: "20px",
-                            opacity: 1,
-                            textAlign: "center",
-                        }}
-                    >
+                {/* Reduced gap here */}
+                <div className="flex justify-center items-center py-2 mb-4">
+                    <p className="text-sm bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 bg-clip-text text-transparent text-center">
                         Or Upload an existing invoice and set payment reminder
                     </p>
                 </div>
+
 
 
 
