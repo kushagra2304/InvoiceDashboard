@@ -343,49 +343,68 @@ const handleStatusChange = (id: number, newStatus: Invoice["status"]) => {
                     </div>
 
                     <div className="space-y-3">
-                        {invoices.map((invoice) => (
-                            <div key={invoice.id} className="flex justify-between items-center py-2">
-                                <div>
-                                    <div className="font-medium text-gray-800">{invoice.clientName}</div>
-                                    <div className="text-sm text-gray-500">
-                                        {formatCurrency(invoice.amount)}, Due: {invoice.dueDate}
-                                    </div>
-                                </div>
+                        <div className="space-y-3">
+  {invoices.map((invoice) => (
+    <div
+      key={invoice.id}
+      className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 flex justify-between items-center"
+    >
+      <div>
+        <div className="font-medium text-gray-800">{invoice.clientName}</div>
+        <div className="text-sm text-gray-500">
+          {formatCurrency(invoice.amount)}, Due: {invoice.dueDate}
+        </div>
+      </div>
 
-                                <div className="flex items-center space-x-2">
-                                    {invoice.id === 1 ? (
-                                       <select
-  value={statuses[invoice.id] ?? invoice.status}
-  onChange={(e) => handleStatusChange(invoice.id, e.target.value as Invoice["status"])}
-  className={`rounded-full text-sm font-medium cursor-pointer px-3 py-1 w-auto ${
-    getStatusColor(statuses[invoice.id] ?? invoice.status)
-  }`}
->
-  {['Update Status', 'paid', 'unpaid', 'disputed', 'overdue', 'partially-paid', 'draft', 'awaited'].map((s) => (
-    <option key={s} value={s}>
-      {s === "partially-paid" ? "Partially Paid" : s.charAt(0).toUpperCase() + s.slice(1)}
-    </option>
+      <div className="flex items-center space-x-2">
+        {invoice.id === 1 ? (
+          <select
+            value={statuses[invoice.id] ?? invoice.status}
+            onChange={(e) =>
+              handleStatusChange(invoice.id, e.target.value as Invoice["status"])
+            }
+            className={`rounded-full text-sm font-medium cursor-pointer px-3 py-1 w-auto ${
+              getStatusColor(statuses[invoice.id] ?? invoice.status)
+            }`}
+          >
+            {[
+              "Update Status",
+              "paid",
+              "unpaid",
+              "disputed",
+              "overdue",
+              "partially-paid",
+              "draft",
+              "awaited",
+            ].map((s) => (
+              <option key={s} value={s}>
+                {s === "partially-paid"
+                  ? "Partially Paid"
+                  : s.charAt(0).toUpperCase() + s.slice(1)}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                invoice.status
+              )}`}
+            >
+              {getStatusText(invoice.status)}
+            </span>
+            {(invoice.status === "overdue" || invoice.status === "awaited") && (
+              <Bell className="w-4 h-4 text-gray-400" />
+            )}
+            {invoice.status === "draft" && (
+              <Edit className="w-4 h-4 text-gray-400" />
+            )}
+          </>
+        )}
+      </div>
+    </div>
   ))}
-</select>
-
-                                    ) : (
-                                        <>
-                                            <span
-                                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}
-                                            >
-                                                {getStatusText(invoice.status)}
-                                            </span>
-                                            {(invoice.status === 'overdue' || invoice.status === 'awaited') && (
-                                                <Bell className="w-4 h-4 text-gray-400" />
-                                            )}
-                                            {invoice.status === 'draft' && (
-                                                <Edit className="w-4 h-4 text-gray-400" />
-                                            )}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
+</div>
                     </div>
 
                 </div>
